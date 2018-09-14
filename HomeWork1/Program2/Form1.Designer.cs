@@ -53,11 +53,11 @@
             // label1
             // 
             this.label1.Font = new System.Drawing.Font("楷体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label1.Location = new System.Drawing.Point(83, 106);
+            this.label1.Location = new System.Drawing.Point(88, 97);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(627, 26);
+            this.label1.Size = new System.Drawing.Size(632, 26);
             this.label1.TabIndex = 2;
-            this.label1.Text = "Enter two numbers below and we will calculate their product:";
+            this.label1.Text = "Enter two numbers and we will calculate their product:";
             // 
             // label2
             // 
