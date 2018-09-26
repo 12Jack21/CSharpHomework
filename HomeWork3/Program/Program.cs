@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Program
 {
-
+    //抽象形状类
     public abstract class Shape
     {
         public abstract double getArea();
@@ -77,7 +77,7 @@ namespace Program
             return Math.Sqrt(temp * (temp - edge1) * (temp - edge2) * (temp - edge3));
         }
     }
-
+    //工厂类
     public class ShapeFactory
     {
         public static Shape GetShape(string shapeType)
@@ -107,7 +107,7 @@ namespace Program
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Which type of shape do you want to create :（rectangle,square,triangle.circle）");
+            Console.WriteLine("Which type of shape do you want to create :（rectangle,square,triangle,circle）");
             string shapeType = Convert.ToString(Console.ReadLine());
             Shape shape = ShapeFactory.GetShape(shapeType);
             Console.WriteLine("The area of the " + shapeType + " is " + shape.getArea());
