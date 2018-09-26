@@ -75,7 +75,6 @@ namespace Program
             //海伦公式计算三角形面积
             double temp = (edge1 + edge2 + edge3) / 2.0;
             return Math.Sqrt(temp * (temp - edge1) * (temp - edge2) * (temp - edge3));
-            //throw new NotImplementedException();
         }
     }
 
@@ -98,7 +97,6 @@ namespace Program
             }
             else
             {
-                //Console.WriteLine("Please enter the length of three edges of the triangle:");
                 shape = new Triangle();
             }
             return shape;
@@ -109,7 +107,7 @@ namespace Program
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Which type of shape do you want to create:");
+            Console.WriteLine("Which type of shape do you want to create :（rectangle,square,triangle.circle）");
             string shapeType = Convert.ToString(Console.ReadLine());
             Shape shape = ShapeFactory.GetShape(shapeType);
             Console.WriteLine("The area of the " + shapeType + " is " + shape.getArea());
