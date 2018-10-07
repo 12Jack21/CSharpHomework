@@ -40,13 +40,17 @@ namespace OrderManage
         }
         public void showOrder()
         {
-            Console.WriteLine("OrderID\t" + orderID);
-            Console.WriteLine("Customer\t" + customer);
+            Console.WriteLine("-------------------------------------");
+            Console.WriteLine("OrderID\t\t" + orderID);
+            Console.WriteLine("Customer\t" + customer + "\n");
+            Console.WriteLine("Goods:");
+            Console.WriteLine("--                                 --");
+            Console.WriteLine("Name\t\t" + "Amount\t\t" + "Price\t\t" );
             foreach (OrderDetail detail in orderDatas)
             {
-                Console.WriteLine("Name\t" + detail.Name + "\t" + " Amount\t" + detail.Amount + "\t" + " Price\t" + detail.Price);
+                Console.WriteLine(detail.Name + "\t\t" + detail.Amount + "\t\t" + detail.Price);
             }
-            Console.WriteLine("\t\t");
+            Console.WriteLine("-------------------------------------\n\n");
         }
         public void modifyOrder()
         {
@@ -54,7 +58,6 @@ namespace OrderManage
             try
             {
                 string goodName = Console.ReadLine();
-                //int index = orderDatas.FindIndex((new DetailsPredicate()).FindName);
 
                 OrderDetail findDetail = orderDatas.Find((new DetailsPredicate(goodName)).FindName);
                 Console.WriteLine("input the new detail (Name,Amount,Price)");
@@ -89,11 +92,10 @@ namespace OrderManage
             this.price = price;
         }
     }
+    //查找的订单明细谓词类
     class DetailsPredicate
     {
         private string name;
-        private int amount;
-        private double price;
 
         public DetailsPredicate(string name)
         {
@@ -103,16 +105,8 @@ namespace OrderManage
         {
             return this.name == detail.Name;
         }
-        public bool FindAmount(OrderDetail detail)
-        {
-            return this.amount == detail.Amount;
-        }
-        public bool FindPrice(OrderDetail detail)
-        {
-            return this.price == detail.Price;
-        }
     }
-    //查找的谓词类
+    //查找的订单谓词类
     class OrderPredicate
     {
         private string orderID;
@@ -199,7 +193,8 @@ namespace OrderManage
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine("Delete failed, exception message: " + e.Message);
+                    Console.WriteLine("Delete failed!!!");
+                    Console.WriteLine("exception message: " + e.Message);
                 }
             }
             catch (Exception e)
@@ -212,7 +207,7 @@ namespace OrderManage
         public void searchOrder()
         {
             int tag = 0;
-            Console.WriteLine("1.searchByID  2.searchByCustomer ");
+            Console.WriteLine("1.searchByID   2.searchByCustomer   3.searchByGoodName");
             Order findOrder = null;
             try
             {
@@ -232,6 +227,9 @@ namespace OrderManage
                     Console.WriteLine("input the customer's name");
                     findOrder = findCustomer(Console.ReadLine());
                     break;
+                case 3:
+                    List<Order> findeOrders;
+                    break;
             }
             Console.WriteLine("The order you want is :\n");
             findOrder.showOrder();
@@ -242,7 +240,7 @@ namespace OrderManage
             return orders.Find((new OrderPredicate(orderID, "")).FindOrderID);
         }
         public Order findCustomer(string customer)
-        {
+        { 
             Predicate<Order> predicate = new OrderPredicate("", customer).FindCustomer;
             return orders.Find(predicate);
         }
@@ -267,12 +265,12 @@ namespace OrderManage
             }
             catch (Exception e)
             {
+                Console.WriteLine("modify failed!!!");
                 Console.WriteLine("exception message :" + e.Message);
             }
         }
 
     }
-
 
     class Program
     {
@@ -291,7 +289,8 @@ namespace OrderManage
                 }
                 catch(Exception e)
                 {
-                    Console.WriteLine("input wrong, exception:" + e.Message);
+                    Console.WriteLine("exception:" + e.Message);
+                    Console.WriteLine("Please enter number range from 1 to 5");
                 }
                 switch (tag)
                 {
