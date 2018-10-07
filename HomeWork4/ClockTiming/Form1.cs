@@ -42,6 +42,7 @@ namespace ClockTiming
         private void Clock_Load(object sender, EventArgs e)
         {
             HideTimeLeft();
+            timer1.Enabled = false;
         }
 
         private void certain_Click(object sender, EventArgs e)
@@ -49,11 +50,12 @@ namespace ClockTiming
             settedHour = Convert.ToInt32(setHour.Value);
             settedMinute = Convert.ToInt32(setMinute.Value);
             timer1.Enabled = true;
-            ShowTimeLeft();
+
         }
 
         private void timer1_Tick(object sender, EventArgs e)
         {
+            ShowTimeLeft();
             DateTime currTime = DateTime.Now;
 
             if(settedMinute - 1 < currTime.Minute)
