@@ -20,13 +20,17 @@ namespace DrawTree
         private void draw_Click(object sender, EventArgs e)
         {
             if (graphics != null) graphics.Clear(BackColor);
+            if(radioYes.Checked == true)
+            {
+                itemRandom();
+            }
             graphics = this.CreateGraphics();
             //drawCayleyTree(10, 200, 310, 100, -Math.PI / 2)；
             drawCayleyTree(10, 200, 450, 100, -Math.PI / 2);
         }
 
         private Graphics graphics;
-
+        private Random random;
         void drawCayleyTree(int n,double x0,double y0,double leng,double th)
         {
             if (n == 0) return;
@@ -47,7 +51,7 @@ namespace DrawTree
             {
                 //随机产生x2,y2
                 x2 = x1;
-                y2 = y0 + (new Random()).NextDouble() * (y1 - y0);
+                y2 = y0 + random.NextDouble() * (y1 - y0);
             }
             else
             {
@@ -67,31 +71,38 @@ namespace DrawTree
             switch (color)
             {
                 case "Pink":
-                    myPen = Pens.Pink;
+                    myPen = new Pen(Color.Pink);
                     break;
                 case "Red":
-                    myPen = Pens.Red;
+                    myPen = new Pen(Color.Red);
                     break;
                 case "Yellow":
-                    myPen = Pens.Yellow;
+                    myPen = new Pen(Color.Yellow);
                     break;
                 case "Black":
-                    myPen = Pens.Black;
+                    myPen = new Pen(Color.Black);
                     break;
                 case "White":
-                    myPen = Pens.White;
+                    myPen = new Pen(Color.White);
                     break;
                 case "Green":
-                    myPen = Pens.Green;
+                    myPen = new Pen(Color.Green);
+                    break;
+                case "Blue":
+                    myPen = new Pen(Color.Blue);
                     break;
             }
+            //调节画笔的宽度
+            myPen.Width = (float)(Convert.ToDouble(width.Text));
             graphics.DrawLine(myPen,
-                (int)x0, (int)y0, (int)x1, (int)y1);       
+                (int)x0, (int)y0, (int)x1, (int)y1);
+
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
             if (graphics == null) graphics = this.CreateGraphics();
+            if (random == null) random = new Random();
         }
 
         private void per1_Scroll(object sender, EventArgs e)
@@ -112,5 +123,100 @@ namespace DrawTree
         {
             offright.Text = angle2.Value.ToString();
         }
+
+        private void widthbar_Scroll(object sender, EventArgs e)
+        {
+            width.Text = (widthbar.Value / 100.0).ToString("0.00");
+        }
+
+        private void offleft_Leave(object sender, EventArgs e)
+        {
+            if (offleft.Text != "")
+            {
+                angle1.Value = Convert.ToInt32(offleft.Text);
+            }
+        }
+
+        private void offright_Leave(object sender, EventArgs e)
+        {
+            if (offright.Text != "")
+            {
+                angle2.Value = Convert.ToInt32(offright.Text);
+            }
+        }
+
+        private void perleft_Leave(object sender, EventArgs e)
+        {
+            if (perleft.Text != "")
+            {
+                per1.Value = Convert.ToInt32(perleft.Text);
+            }
+        }
+
+        private void perright_Leave(object sender, EventArgs e)
+        {
+            if (perright.Text != "")
+            {
+                per2.Value = Convert.ToInt32(perright.Text);
+            }
+        }
+
+        private void width_Leave(object sender, EventArgs e)
+        {
+            if (width.Text != "")
+            {
+                widthbar.Value = (int)(Convert.ToDouble(width.Text) * 100);
+            }
+        }
+
+        private void radioYes_CheckedChanged(object sender, EventArgs e)
+        {
+            if (radioYes.Checked == false) return;
+            itemRandom();
+        }
+
+        //各个项的随机数产生
+        private void itemRandom()
+        {
+            offleft.Text = random.Next(0, 90).ToString();
+            angle1.Value = Convert.ToInt32(offleft.Text);
+            offright.Text = random.Next(0, 90).ToString();
+            angle2.Value = Convert.ToInt32(offright.Text);
+            perleft.Text = random.NextDouble().ToString("0.00");
+            per1.Value = (int)(Convert.ToDouble(perleft.Text) * 100);
+            perright.Text = random.NextDouble().ToString("0.00");
+            per2.Value = (int)(Convert.ToDouble(perright.Text) * 100);
+            lenpara.Text = (random.NextDouble() * 2).ToString("0.00");
+            width.Text = (random.NextDouble() * 5).ToString("0.00");
+            widthbar.Value = (int)(Convert.ToDouble(width.Text) * 100);
+            int colorTag = random.Next(0, 7);
+            string colorSt = null;
+            switch (colorTag)
+            {
+                case 0:
+                    colorSt = "Pink";
+                    break;
+                case 1:
+                    colorSt = "Red";
+                    break;
+                case 2:
+                    colorSt = "Green";
+                    break;
+                case 3:
+                    colorSt = "Yellow";
+                    break;
+                case 4:
+                    colorSt = "Blue";
+                    break;
+                case 5:
+                    colorSt = "White";
+                    break;
+                case 6:
+                    colorSt = "Black";
+                    break;
+            }
+            colorbox.Text = colorSt;
+        }
+
     }
 }
