@@ -10,7 +10,7 @@ using System.Xml.Serialization;
 //          2、为OrderService类的各个Public方法，编写测试用例，使用合法和非法的输出数据进行测试。
 
 
-namespace Program1
+namespace Program
 {
     public class Order
     {
@@ -25,6 +25,7 @@ namespace Program1
         {
             OrderDatas = new List<OrderDetail>();
         }
+
         public Order(string customer)
         {
             OrderDatas = new List<OrderDetail>();
@@ -45,10 +46,45 @@ namespace Program1
             }
             return sum;
         }
+        //增加订单明细项
         public void addDetail(OrderDetail detail)
         {
-            OrderDatas.Add(detail);
+            if(!orderDatas.Contains(detail))
+            {
+                OrderDatas.Add(detail);
+            }
+            else
+            {
+                throw new Exception("The detail is already Sexist!!!");
+            }
         }
+        //移除订单明细
+        public void removeDetail(OrderDetail detail)
+        {
+            if(orderDatas.Contains(detail))
+            {
+                OrderDatas.Remove(detail);
+            }
+            else
+            {
+                throw new Exception("The detail is not exist!!!");
+            }
+        }
+        //根据商品名查找明细项
+        public OrderDetail searchDetail(string goodName)
+        {
+            var query = orderDatas.Where(d => d.Name == goodName).First();
+            if(query == null)
+            {
+                Console.WriteLine("there is no such detail !!!");
+                return null;
+            }
+            else
+            {
+                return query;
+            }
+        }
+
         public void showOrder()
         {
             Console.WriteLine("-------------------------------------");
@@ -60,32 +96,11 @@ namespace Program1
             Console.WriteLine("Name\t\t" + "Amount\t\t" + "Price\t\t");
             foreach (OrderDetail detail in OrderDatas)
             {
-                Console.WriteLine(detail.Name + "\t\t" + detail.Amount + "\t\t" + detail.Price);
+                Console.WriteLine(detail);
             }
-            Console.WriteLine("-------------------------------------\n\n");
+            Console.WriteLine("-------------------------------------\n");
         }
-        public void modifyOrder()
-        {
-            Console.WriteLine("input the good's name you want to modify");
-            try
-            {
-                string goodName = Console.ReadLine();
-                //Linq查询
-                var findDetail = OrderDatas.Where(n => n.Name == goodName).First();
-                Console.WriteLine("input the new detail (Name,Amount,Price)");
-                string _name = Console.ReadLine();
-                int _amount = Convert.ToInt32(Console.ReadLine());
-                double _price = Convert.ToDouble(Console.ReadLine());
-                findDetail.Name = _name;
-                findDetail.Amount = _amount;
-                findDetail.Price = _price;
-                Console.WriteLine("modeify succeed!");
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-        }
+
     }
 
     public class OrderDetail
@@ -101,6 +116,12 @@ namespace Program1
         public OrderDetail(string name, int amount, double price)
         {
             this.name = name;
+            this.amount = amount;
+            this.price = price;
+        }
+        //更新明细数据
+        public void updateDetail(int amount,double price)
+        {
             this.amount = amount;
             this.price = price;
         }
@@ -123,152 +144,55 @@ namespace Program1
         }
 
         //添加订单
-        public void addOrder()
+        public void addOrder(Order order)
         {
-            Console.WriteLine("input the customer's name");
-            string customer = Console.ReadLine();
-            Order newOrder = new Order(customer);
-            try
+            if(!orders.Contains(order))
             {
-                Orders.Add(newOrder);
-                //Console.WriteLine("the Order has been added");
+                orders.Add(order);
             }
-            catch (Exception e)
+            else
             {
-                Console.WriteLine("Add failed, exception message: " + e.Message);
-            }
-
-            //添加订单明细
-            Console.WriteLine("input the amount of the Orderdetails");
-            int amountOfDetails = 0;
-            try
-            {
-                amountOfDetails = Convert.ToInt32(Console.ReadLine());
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-            Console.WriteLine("input the OrderDetails (GoodName,Amount,Price)\n");
-            for (int i = 0; i < amountOfDetails; i++)
-            {
-                try
-                {
-                    string name = Console.ReadLine();
-                    int amount = Convert.ToInt32(Console.ReadLine());
-                    double price = Convert.ToDouble(Console.ReadLine());
-                    newOrder.addDetail(new OrderDetail(name, amount, price));
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e.Message);
-                }
-
+                throw new Exception("The order is already exist!!!");
             }
         }
 
         //删除订单
-        public void deleteOrder()
+       public void removeOrder(List<Order> delOrders)
         {
-            Console.WriteLine("input the customer's name of the Order you want to delete");
-            try
+            Order delOrder = delOrders[0];
+            if(orders.Contains(delOrder))
             {
-                string customerName = Console.ReadLine();
-                try
-                {
-                    //orders.Remove(findCustomer(customerName));
-                    Console.WriteLine("the Order has been deleted");
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine("Delete failed!!!");
-                    Console.WriteLine("exception message: " + e.Message);
-                }
+                orders.Remove(delOrder);
             }
-            catch (Exception e)
+            else
             {
-                Console.WriteLine(e.Message);
+                throw new Exception("The order is not exist!!!");
             }
         }
 
         //查询订单
-        public void searchOrder()
+        public List<Order> searchOrderByCus(string customer)
         {
-            int tag = 0;
-            string value = null;
-            IEnumerable<Order> findOrder = null;
-            Console.WriteLine("1.searchByID   2.searchByCustomer 3.searchOrder(Excess10000yuan)");
-            try
-            {
-                tag = Convert.ToInt32(Console.ReadLine());
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-            switch (tag)
-            {
-                case 1:
-                    Console.WriteLine("input the OrderID");
-                    try
-                    {
-                        value = Console.ReadLine();
-                    }
-                    catch (Exception e)
-                    {
-                        Console.WriteLine(e.Message);
-                    }
-
-                    findOrder = from n in Orders where n.OrderID == value select n;
-                    break;
-                case 2:
-                    Console.WriteLine("input the customer's name");
-                    try
-                    {
-                        value = Console.ReadLine();
-                    }
-                    catch (Exception e)
-                    {
-                        Console.WriteLine(e.Message);
-                    }
-                    findOrder = from n in Orders where n.Customer == value select n;
-                    break;
-                case 3:
-                    //查找订单总额大于10000元的所有订单
-                    findOrder = from n in Orders where n.totalPrice() > 10000 select n;
-                    break;
-            }
-            Console.WriteLine("The order you want :\n");
-            foreach (var n in findOrder)
-            {
-                n.showOrder();
-            }
+            var query = orders.Where(o => o.Customer == customer);
+            return query.ToList();
+        }
+        public List<Order> searchOrderByID(string id)
+        {
+            var query = orders.Where(o => o.OrderID == id);
+            return query.ToList();
+        }
+        public List<Order> searchOrderHtPrice(double price)
+        {
+            var query = orders.Where(o => o.totalPrice() > price);
+            return query.ToList();
         }
 
-        //显示订单
-        public void showOrders()
+        //显示所有订单
+        public void showAllOrders()
         {
             foreach (Order order in Orders)
             {
                 order.showOrder();
-            }
-        }
-
-        //修改订单
-        public void modifyOrder()
-        {
-            Console.WriteLine("input the customer's name of the Order you want to modify");
-            try
-            {
-                string customersName = Console.ReadLine();
-                //Linq查询
-                var findOrder_ = Orders.Where(n => n.Customer == customersName).First();
-                findOrder_.modifyOrder();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("modify failed!!!");
-                Console.WriteLine("exception message :" + e.Message);
             }
         }
 
@@ -298,7 +222,7 @@ namespace Program1
                 FileStream fs = new FileStream(filename, FileMode.Open);
                 Orders = (List<Order>)xmlSerializer.Deserialize(fs);
                 Console.WriteLine("Import succeed!!!\n");
-                showOrders();
+                showAllOrders();
             }
             catch(Exception e)
             {
@@ -312,13 +236,152 @@ namespace Program1
     {
         static void Main(string[] args)
         {
+            startService();
+        }
+
+        private static void addOrder(OrderService ser)
+        {
+            Console.WriteLine("input the customer's name");
+            string customer = Console.ReadLine();
+            Order newOrder = new Order(customer);          
+            //添加订单明细
+            Console.WriteLine("input the amount of the Orderdetails");
+            int amountOfDetails = 0;
+            try
+            {
+                amountOfDetails = Convert.ToInt32(Console.ReadLine());
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            Console.WriteLine("input the OrderDetails (GoodName,Amount,Price)");
+            for (int i = 0; i < amountOfDetails; i++)
+            {
+                try
+                {
+                    string name = Console.ReadLine();
+                    int amount = Convert.ToInt32(Console.ReadLine());
+                    double price = Convert.ToDouble(Console.ReadLine());
+                    newOrder.addDetail(new OrderDetail(name, amount, price));
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+
+            }
+            ser.addOrder(newOrder);
+        }
+
+        private static void deleteOrder(OrderService ser)
+        {
+            Console.WriteLine("input the customer's name of the Order you want to delete");
+            try
+            {
+                string customerName = Console.ReadLine();
+                try
+                {
+                    ser.removeOrder(ser.searchOrderByCus(customerName));
+                    Console.WriteLine("the Order has been deleted");
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("Delete failed!!!");
+                    Console.WriteLine("exception message: " + e.Message);
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
+
+        public static void searchOrder(OrderService ser)
+        {
+            int tag = 0;
+            string value = null;
+            List<Order> findOrder = null;
+            Console.WriteLine("1.searchByID   2.searchByCustomer 3.searchOrder(Excess10000yuan)");
+            try
+            {
+                tag = Convert.ToInt32(Console.ReadLine());
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            switch (tag)
+            {
+                case 1:
+                    Console.WriteLine("input the OrderID");
+                    try
+                    {
+                        value = Console.ReadLine();
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e.Message);
+                    }
+
+                    findOrder = ser.searchOrderByID(value);  
+                    break;
+                case 2:
+                    Console.WriteLine("input the customer's name");
+                    try
+                    {
+                        value = Console.ReadLine();
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e.Message);
+                    }
+                    findOrder = ser.searchOrderByCus(value).ToList();
+                    break;
+                case 3:
+                    //查找订单总额大于10000元的所有订单
+                    findOrder = ser.searchOrderHtPrice(10000);
+                    break;
+            }
+            Console.WriteLine("The order you want :");
+            foreach (var n in findOrder)
+            {
+                n.showOrder();
+            }
+        }
+
+        private static void modifyOrder(OrderService ser)
+        {
+            Console.WriteLine("input the customer's name of the order and the good's name of the OrderDetail you want to modify");
+            try
+            {
+                string customer = Console.ReadLine();
+                string goodName = Console.ReadLine();
+
+                OrderDetail detail = ser.searchOrderByCus(customer).First().searchDetail(goodName);
+
+                Console.WriteLine("input the new detail (Amount,Price)");
+                int _amount = Convert.ToInt32(Console.ReadLine());
+                double _price = Convert.ToDouble(Console.ReadLine());
+                //更新订单明细
+                detail.updateDetail(_amount, _price);
+                Console.WriteLine("modeify succeed!");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
+
+        private static void startService()
+        {
             bool run = true;
             OrderService myService = new OrderService();
             while (run)
             {
                 int tag = 0;
-                Console.WriteLine("---------------------------------------------------------------------------------");
-                Console.WriteLine("OrderService (1.addOrder   2.deleteOrder   3.modifyOrder   4.searchOrder   5.Export   6.Import)");
+                Console.WriteLine("-------------------------------------------------------------------------------------------");
+                Console.WriteLine("OrderService (1.addOrder 2.deleteOrder 3.modifyOrder 4.searchOrder 5.Export 6.Import 7.Exit)");
                 try
                 {
                     tag = Convert.ToInt32(Console.ReadLine());
@@ -331,19 +394,28 @@ namespace Program1
                 switch (tag)
                 {
                     case 1:
-                        myService.addOrder();
+                        addOrder(myService);
                         break;
                     case 2:
-                        myService.deleteOrder();
+                        deleteOrder(myService);
                         break;
                     case 3:
-                        myService.modifyOrder();
+                        modifyOrder(myService);
                         break;
                     case 4:
-                        myService.searchOrder();
+                        searchOrder(myService);
                         break;
                     case 5:
-                        myService.Export("Order.xml");
+                        Console.WriteLine("Input the name of the XML file (Without extension):");
+                        try
+                        {
+                            string filename = Console.ReadLine();
+                            myService.Export(filename + ".xml");
+                        }
+                        catch(Exception e)
+                        {
+                            Console.WriteLine(e.Message);
+                        }
                         break;
                     case 6:
                         myService.Import("Order.xml");
