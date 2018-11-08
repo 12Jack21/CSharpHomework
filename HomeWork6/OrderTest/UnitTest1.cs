@@ -61,5 +61,23 @@ namespace OrderTest
             Assert.IsTrue(ser.searchOrderByID(order2.OrderID).Contains(order2));
             Assert.IsTrue(ser.searchOrderHtPrice(180).Contains(order2) && ser.searchOrderHtPrice(450).Contains(order1));
         }
+
+        //[TestMethod]
+        //public void ExportTestMethod()
+        //{
+        //    Order order1 = new Order("xiaoming");
+        //    Order order2 = new Order("lihua");
+        //    order1.addDetail(new OrderDetail("cat", 1, 500.6));
+        //    order1.addDetail(new OrderDetail("bottle", 23, 3.6));
+        //    order2.addDetail(new OrderDetail("sweet", 400, 1.23));
+        //    List<Order> orders = new List<Order>();
+        //    orders.Add(order1);
+        //    orders.Add(order2);
+
+        //    OrderService ser = new OrderService();
+        //    ser.Orders = orders;
+
+
+        //}
     }
 }
