@@ -9,6 +9,13 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using OrderSpace;
 
+/*
+1、为订单添加数据验证功能，要求
+  （1）订单号不能为空、不能重复、并且是”年月日+三位流水号”的形式。
+  （2）客户的电话号码是正确的格式。
+2、将订单导出为HTML文件，在浏览器打开并显示。（备注：使用XSLT进行转换）
+*/
+
 namespace OrderWin
 {
     public partial class Form1 : Form
@@ -29,16 +36,19 @@ namespace OrderWin
         private void initOrderService()
         {
             //////////////////////////////////////////////还有修改订单处需要改善
+            Customer xiaoming = new Customer("Xiaoming", "13457783400");
+            Customer lihua = new Customer("Lihua", "18790025482");
+            Customer sam = new Customer("Sam", "15989970031");
             myService = new OrderService();
-            Order order1 = new Order("xiaoming");
+            Order order1 = new Order(xiaoming);
             order1.addDetail(new OrderDetail("water", 10, 3.2));
             order1.addDetail(new OrderDetail("milk", 100, 4.76));
             order1.addDetail(new OrderDetail("laptop", 2, 500));
             order1.addDetail(new OrderDetail("course", 5, 539.99));
-            Order order2 = new Order("lihua");
+            Order order2 = new Order(lihua);
             order2.addDetail(new OrderDetail("ball", 1, 290));
             order2.addDetail(new OrderDetail("book", 2, 54.7));
-            Order order3 = new Order("Sam");
+            Order order3 = new Order(sam);
             order3.addDetail(new OrderDetail("bag", 2, 100.3));
             order3.addDetail(new OrderDetail("shoe", 4, 1423.5));
             order3.addDetail(new OrderDetail("chair", 10, 45.1));
@@ -207,6 +217,28 @@ namespace OrderWin
             textBox1.Text = "";
             orderBindingSource.DataSource = myService.Orders;
             setDataGridView2();
+        }
+
+        //导出订单，可选择导出为 XML文件或者 HTML文件（通过xslt转换成的）
+        private void button9_Click(object sender, EventArgs e)
+        {
+            string filePos = "../../Orders.xml";
+            if(saveFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                if (saveFileDialog1.FilterIndex == 1)
+                    myService.Export(saveFileDialog1.FileName);
+                if(saveFileDialog1.FilterIndex == 2)
+                {
+                    myService.Export(filePos);
+                    myService.xsltTran(filePos, "../../OrderList.xslt", saveFileDialog1.FileName);
+                }
+            }
+        }
+        //导入订单
+        private void button10_Click(object sender, EventArgs e)
+        {
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+                myService.Import(openFileDialog1.FileName);
         }
     }
 }
