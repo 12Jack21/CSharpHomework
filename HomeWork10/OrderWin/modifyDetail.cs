@@ -7,14 +7,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using OrderSpace;
+using EFStruc;
 
 
 namespace OrderWin
 {
     public partial class modifyDetail : Form
     {
-        Form1 form1;
+        MainForm form1;
         List<OrderDetail> detailGroup;
         bool isChange;
         bool isConfirm;
@@ -28,15 +28,15 @@ namespace OrderWin
         private void initDetailGroup()
         {
             detailGroup = new List<OrderDetail>();
-            foreach (OrderDetail d in form1.myService.searchOrderByCus(label4.Text)[0].OrderDatas)
+            foreach (OrderDetail d in form1.myService.QueryByCustormer(label4.Text)[0].OrderDetails)
             {
                 detailGroup.Add(d);
             }
         }
         private void modifyDetail_Load(object sender, EventArgs e)
         {
-            form1 = (Form1)this.Owner;
-            label4.Text = form1.myService.searchOrderByID(form1.OrderTxt)[0].Customer.Name;
+            form1 = (MainForm)this.Owner;
+            label4.Text = form1.myService.GetOrder(form1.OrderTxt).Cus.Name;
             initDetailGroup();
             dataGridView1.DataSource = detailGroup;
         }
@@ -58,7 +58,9 @@ namespace OrderWin
         {
             if(isConfirm)
             {
-                form1.myService.searchOrderByCus(label4.Text)[0].OrderDatas = detailGroup;
+                Order o = form1.myService.QueryByCustormer(label4.Text)[0];
+                o.OrderDetails = detailGroup;
+                form1.myService.Update(o);
                 form1.reloadForm();
             }
             this.Close();

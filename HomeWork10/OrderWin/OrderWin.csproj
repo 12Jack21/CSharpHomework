@@ -74,11 +74,11 @@
     <Compile Include="addDetail.Designer.cs">
       <DependentUpon>addDetail.cs</DependentUpon>
     </Compile>
-    <Compile Include="Form1.cs">
+    <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="addOrder.cs">
       <SubType>Form</SubType>
@@ -106,8 +106,8 @@
     <EmbeddedResource Include="addOrder.resx">
       <DependentUpon>addOrder.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <EmbeddedResource Include="MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="modifyDetail.resx">
       <DependentUpon>modifyDetail.cs</DependentUpon>
@@ -141,13 +141,13 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\OrderService\OrderService.csproj">
-      <Project>{a1721aa5-fc57-4b7d-805a-c3b84ebaecf0}</Project>
-      <Name>OrderService</Name>
-    </ProjectReference>
+    <Content Include="OrderList.xslt" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="OrderList.xslt" />
+    <ProjectReference Include="..\HomeWork10\EFStruc.csproj">
+      <Project>{dc7e24c7-9fba-4dff-a579-e9330e0a4ec7}</Project>
+      <Name>EFStruc</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

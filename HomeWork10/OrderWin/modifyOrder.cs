@@ -8,12 +8,13 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using EFStruc;
 
 namespace OrderWin
 {
     public partial class modifyOrder : Form
     {
-        Form1 form1 = null;
+        MainForm form1 = null;
         public modifyOrder()
         {
             InitializeComponent();
@@ -21,7 +22,7 @@ namespace OrderWin
 
         private void button1_Click(object sender, EventArgs e)
         {
-            form1 = (Form1)this.Owner;
+            form1 = (MainForm)this.Owner;
             //电话(手机）号码格式
             string pattern = "^1[0-9]{10}$";
             Regex rx = new Regex(pattern);
@@ -36,7 +37,9 @@ namespace OrderWin
             }
             else
             {
-                form1.myService.searchOrderByID(form1.OrderTxt)[0].update(textBox1.Text,textBox2.Text);
+                Order o = form1.myService.GetOrder(form1.OrderTxt);
+                o.update(textBox1.Text, textBox2.Text);
+                form1.myService.Update(o);
                 MessageBox.Show("Modify succeed!!!");
             }
         }

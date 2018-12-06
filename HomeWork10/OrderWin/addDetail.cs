@@ -7,13 +7,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using OrderSpace;
+using EFStruc;
 
 namespace OrderWin
 {
     public partial class addDetail : Form
     {
-        Form1 form1;
+        MainForm form1;
         Order seleOrder;
         List<OrderDetail> detailGroup;
         public addDetail()
@@ -23,10 +23,10 @@ namespace OrderWin
 
         private void addDetail_Load(object sender, EventArgs e)
         {
-            form1 = (Form1)this.Owner;
+            form1 = (MainForm)this.Owner;
             detailGroup = new List<OrderDetail>();
-            seleOrder = form1.myService.searchOrderByID(form1.OrderTxt)[0];
-            foreach(OrderDetail d in seleOrder.OrderDatas)
+            seleOrder = form1.myService.GetOrder(form1.OrderTxt);
+            foreach(OrderDetail d in seleOrder.OrderDetails)
             {
                 detailGroup.Add(d);
             }
@@ -42,7 +42,7 @@ namespace OrderWin
             }
             try
             {
-                detailGroup.Add(new OrderDetail(textBox1.Text, Convert.ToInt32(textBox2.Text), Convert.ToDouble(textBox3.Text)));
+                detailGroup.Add(new OrderDetail(textBox1.Text, Convert.ToDouble(textBox3.Text),Convert.ToInt32(textBox2.Text)));
                 MessageBox.Show("Add detail succeed!!!");
             }
             catch
@@ -62,9 +62,12 @@ namespace OrderWin
         //取消，退出
         private void button2_Click(object sender, EventArgs e)
         {
-            seleOrder.OrderDatas = detailGroup;
+            seleOrder.OrderDetails = detailGroup;
+            form1.myService.Delete(seleOrder.Id);
+            form1.myService.Add(seleOrder);
             form1.reloadForm();
             this.Close();
         }
+
     }
 }

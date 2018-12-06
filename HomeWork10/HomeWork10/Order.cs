@@ -27,7 +27,7 @@ namespace EFStruc
             set { }
         }
 
-        private static int num = 0;
+        public static int num = 0;
         //”年月日+三位流水号”的格式
         public Order(Customer customer,List<OrderDetail> orderDetails)
         {
@@ -45,9 +45,53 @@ namespace EFStruc
             OrderDetails = new List<OrderDetail>();
         }
 
-        public override int GetHashCode()
+        //public override int GetHashCode()
+        //{
+        //    return base.GetHashCode();
+        //}
+
+        //增加订单明细项
+        public void addDetail(OrderDetail detail)
         {
-            return base.GetHashCode();
+            if (!OrderDetails.Contains(detail))
+            {
+                OrderDetails.Add(detail);
+            }
+            else
+            {
+                throw new Exception("The detail is already Sexist!!!");
+            }
+        }
+        //移除订单明细
+        public void removeDetail(OrderDetail detail)
+        {
+            if (OrderDetails.Contains(detail))
+            {
+                OrderDetails.Remove(detail);
+            }
+            else
+            {
+                throw new Exception("The detail is not exist!!!");
+            }
+        }
+        //更新订单
+        public void update(string name, string phoneNum)
+        {
+            Cus.update(name, phoneNum);
+        }
+        //根据商品名查找明细项
+        public OrderDetail searchDetail(string goodName)
+        {
+            try
+            {
+                var query = OrderDetails.Where(d => d.Name == goodName).First();
+                return query;
+            }
+            catch
+            {
+                throw new Exception("No such detail !!!");
+            }
+
         }
     }
 }

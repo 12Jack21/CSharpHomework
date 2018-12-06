@@ -10,7 +10,7 @@ namespace EFStruc
     public class OrderDetail
     {
         [Key]
-        public int Id { get; set; }
+        public string Id { get; set; }
         public string Name { get; set; }
         public double UnitPrice { get; set; }
         public int Quantity { get; set; }
@@ -18,10 +18,10 @@ namespace EFStruc
         public OrderDetail()
         {
             //自动累加主键
-            //Id = Guid.NewGuid().ToString();
+            Id = Guid.NewGuid().ToString();
         }
 
-        public static int num;
+        //public static int num;
         //public OrderDetail(string id,string name,double unitPrice,int quantity)
         //{
         //    Id = id;
@@ -31,7 +31,7 @@ namespace EFStruc
         //}
         public OrderDetail(string name, double unitPrice, int quantity)
         {
-            Id = (++num);
+            Id = Guid.NewGuid().ToString();
             Name = name;
             Quantity = quantity;
             UnitPrice = unitPrice;

@@ -43,7 +43,17 @@ namespace EFStruc
                 db.SaveChanges();
             }
         }
-
+        public void UpdateOr(Order order)
+        {
+            using (var db = new OrderDB())
+            {
+                db.OrderDetail.RemoveRange(order.OrderDetails);
+                db.Order.Remove(order);
+                db.Order.Add(order);
+                db.Entry(order).State = EntityState.Added;
+                db.SaveChanges();
+            }
+        }
         public Order GetOrder(String Id)
         {
             using (var db = new OrderDB())
@@ -62,12 +72,12 @@ namespace EFStruc
         }
 
 
-        public List<Order> QueryByCustormer(String custormer)
+        public List<Order> QueryByCustormer(String cusName)
         {
             using (var db = new OrderDB())
             {
                 return db.Order.Include("OrderDetails")
-                  .Where(o => o.Cus.Equals(custormer)).ToList<Order>();
+                  .Where(o => o.Cus.Name == cusName).ToList<Order>();
             }
         }
 
@@ -78,6 +88,16 @@ namespace EFStruc
                 var query = db.Order.Include("OrderDetails")
                   .Where(o => o.OrderDetails.Where(
                     detail => detail.Name.Equals(productName)).Count() > 0);
+                return query.ToList<Order>();
+            }
+        }
+
+        public List<Order> QueryAbovePrice(double price)
+        {
+            using(var db = new OrderDB())
+            {
+                var query = db.Order.Include("OrderDetails")
+                    .Where(o => o.TotPrice >= price);
                 return query.ToList<Order>();
             }
         }

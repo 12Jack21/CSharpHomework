@@ -61,7 +61,7 @@
             this.button1.Location = new System.Drawing.Point(153, 225);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(111, 58);
-            this.button1.TabIndex = 2;
+            this.button1.TabIndex = 3;
             this.button1.Text = "Confirm";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
@@ -72,7 +72,7 @@
             this.button2.Location = new System.Drawing.Point(270, 225);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(111, 58);
-            this.button2.TabIndex = 3;
+            this.button2.TabIndex = 4;
             this.button2.Text = "Cancel";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
@@ -83,7 +83,7 @@
             this.textBox2.Location = new System.Drawing.Point(184, 171);
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(163, 30);
-            this.textBox2.TabIndex = 5;
+            this.textBox2.TabIndex = 2;
             // 
             // label2
             // 

@@ -11,7 +11,6 @@ namespace EFStruc
         static void Main(string[] args)
         {
             OrderService myService = new OrderService();
-            //orderService.Delete("001");
 
             Customer xiaoming = new Customer("Xiaoming", "13457783400");
             Customer lihua = new Customer("Lihua", "18790025482");
